@@ -1,5 +1,9 @@
 apply plugin: 'FMMPPlugin'
 
+dependencies {
+  fmpp fileTree(dir: 'lib', include: '*.jar')
+}
+
 class FMMPPlugin implements Plugin<Project> {
 
   @Override
@@ -8,7 +12,7 @@ class FMMPPlugin implements Plugin<Project> {
     project.configurations << {
         fmpp
     }
-    project.task << {
+    project.task('fmpp') << {
       ant.taskdef(name: 'fmpp', classname: 'fmpp.tools.AntTask', classpath: configurations.fmpp.asPath)
       def props = project.extensions.fmpp
       ant.fmpp(sourceRoot: props.fmppSourceRoot, outputRoot: props.fmppOutputDir, includes: props.fmppIncludes,
