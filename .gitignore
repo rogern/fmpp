@@ -1,0 +1,11 @@
+# Ignoring hidden files and folder along with project files
+.DS_Store
+.gradle
+.gradlew
+.gradlew.bat
+.idea
+*.iml
+build/
+out/
+gradle/
+generated/
