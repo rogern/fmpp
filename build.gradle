@@ -1,0 +1,27 @@
+apply plugin: 'FMMPPlugin'
+
+class FMMPPlugin implements Plugin<Project> {
+
+  @Override
+  void apply(Project project) {
+    project.extensions.create("fmpp", FMMPPluginExtension)
+    project.configurations << {
+        fmpp
+    }
+    project.task << {
+      ant.taskdef(name: 'fmpp', classname: 'fmpp.tools.AntTask', classpath: configurations.fmpp.asPath)
+      def props = project.extensions.fmpp
+      ant.fmpp(sourceRoot: props.fmppSourceRoot, outputRoot: props.fmppOutputDir, includes: props.fmppIncludes,
+          replaceExtension: props.fmppReplaceExtension, data: props.fmppData)
+    }
+  }
+}
+
+class FMMPPluginExtension {
+  String fmppSourceRoot
+  String fmppOutputDir
+  String fmppIncludes
+  String fmppReplaceExtension
+  String fmppData
+}
+
