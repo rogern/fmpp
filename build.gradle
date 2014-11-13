@@ -1,31 +1,8 @@
-apply plugin: 'FMMPPlugin'
+apply plugin: 'groovy'
+apply plugin: 'org.rogern.gradlefmpp'
 
 dependencies {
+  compile gradleApi()
+  compile localGroovy()
   fmpp fileTree(dir: 'lib', include: '*.jar')
 }
-
-class FMMPPlugin implements Plugin<Project> {
-
-  @Override
-  void apply(Project project) {
-    project.extensions.create("fmpp", FMMPPluginExtension)
-    project.configurations << {
-        fmpp
-    }
-    project.task('fmpp') << {
-      ant.taskdef(name: 'fmpp', classname: 'fmpp.tools.AntTask', classpath: configurations.fmpp.asPath)
-      def props = project.extensions.fmpp
-      ant.fmpp(sourceRoot: props.fmppSourceRoot, outputRoot: props.fmppOutputDir, includes: props.fmppIncludes,
-          replaceExtension: props.fmppReplaceExtension, data: props.fmppData)
-    }
-  }
-}
-
-class FMMPPluginExtension {
-  String fmppSourceRoot
-  String fmppOutputDir
-  String fmppIncludes
-  String fmppReplaceExtension
-  String fmppData
-}
-
