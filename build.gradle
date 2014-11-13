@@ -1,5 +1,9 @@
 apply plugin: 'groovy'
-apply plugin: 'org.rogern.gradlefmpp'
+//apply plugin: 'org.rogern.gradlefmpp'
+
+project.configurations {
+    fmpp
+}
 
 dependencies {
   compile gradleApi()
