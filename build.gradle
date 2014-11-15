@@ -1,11 +1,25 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'release'
 
-version = '1.0-SNAPSHOT'
 group = 'org.rogern.gradlefmpp'
+
+buildscript {
+  repositories {
+    maven {
+      url "https://oss.sonatype.org/content/groups/public"
+    }
+  }
+  dependencies {
+    classpath 'com.github.townsfolk:gradle-release:1.2'
+  }
+}
 
 repositories {
   mavenLocal()
+  maven {
+    url nexusPublicUrl
+  }
 }
 
 dependencies {
@@ -22,3 +36,19 @@ jar {
   baseName = project.name + '-all'
   from { fileTree(dir: 'lib', include: '*.jar').collect { it.isDirectory() ? it : zipTree(it) } }
 }
+
+uploadArchives.repositories.mavenDeployer {
+  uniqueVersion = false
+  // credentials and repositories from gradle.properties
+  repository(url: releaseRepository) {
+    authentication(userName: nexusUsername, password: nexusPassword)
+  }
+
+  snapshotRepository(url: snapshotRepository) {
+    authentication(userName: nexusUsername, password: nexusPassword)
+  }
+
+  pom.artifactId = 'gradlefmpp'
+}
+
+createReleaseTag.dependsOn uploadArchives
