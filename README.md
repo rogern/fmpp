@@ -14,9 +14,7 @@ In your build.gradle:
 ```
 buildscript {
   repositories {
-    maven {
-      mavenLocal()
-    }
+    mavenLocal()
   }
   dependencies {
     classpath 'org.rogern.gradlefmpp:gradle_fmpp_plugin-all:1.0-SNAPSHOT'
